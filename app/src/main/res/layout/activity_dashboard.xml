@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    tools:context=".DashboardActivity">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/dashboard_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dashboard"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
+
+    <!-- User Information -->
+    <LinearLayout
+        android:id="@+id/user_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/dashboard_title"
+        android:layout_marginTop="20dp"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp">
+        <!-- Full Name -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full Name: "
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginEnd="4dp"/>
+            <TextView
+                android:id="@+id/user_fullname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+            ></LinearLayout>
+
+
+
+        <!-- Username -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username: "
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginEnd="4dp"/>
+        <TextView
+            android:id="@+id/user_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+        <!-- Email -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email: "
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginEnd="4dp"/>
+        <TextView
+            android:id="@+id/user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+        <!-- Sex -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender: "
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginEnd="4dp"/>
+        <TextView
+            android:id="@+id/user_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+        <!-- Date of Birth -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date of Birth: "
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginEnd="4dp"/>
+        <TextView
+            android:id="@+id/user_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"  />
+    </LinearLayout>
+
+        <!-- Age -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age: "
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginEnd="4dp"/>
+        <TextView
+            android:id="@+id/user_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"  />
+    </LinearLayout>
+    </LinearLayout>
+
+    <!-- Log Out Button -->
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:background="@drawable/button"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp" />
+</RelativeLayout>

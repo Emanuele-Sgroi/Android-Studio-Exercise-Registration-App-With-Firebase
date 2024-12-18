@@ -36,11 +36,20 @@
         android:gravity="center"
         android:paddingStart="35dp"
         android:paddingEnd="35dp">
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/username_input"
+        <TextView
+            android:id="@+id/username_email_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your username"
+            android:text=""
+            android:textColor="@color/red"
+            android:visibility="gone"
+            android:layout_marginBottom="3dp"
+            android:textSize="14sp" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/username_email_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your username or email"
             android:inputType="text"
             android:maxLines="1"
             android:paddingStart="10dp"
@@ -51,17 +60,7 @@
             android:background="@color/white"
             android:longClickable="false"
             />
-        <TextView
-            android:id="@+id/username_limit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="5dp"
-            android:text="0/20"
-            android:textAlignment="textEnd"
-            android:textColor="@color/white"
-            android:textSize="15sp"/>
+
 
     </LinearLayout>
 
@@ -75,7 +74,15 @@
         android:orientation="vertical"
         android:paddingStart="35dp"
         android:paddingEnd="35dp">
-
+        <TextView
+            android:id="@+id/password_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/red"
+            android:visibility="gone"
+            android:layout_marginBottom="3dp"
+            android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/password_input"

@@ -15,19 +15,25 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class MainActivity extends AppCompatActivity {
     // UI Elements
-    private Button signUpButton;
-    private EditText inputPassword, inputUsername;
-    private TextView usernameLimit;
+    private Button signUpButton, loginButton;
+    private EditText inputPassword, inputUsernameEmail;
+    private TextView  usernameEmailError, passwordError;
+
+    // Database
+    private FirebaseFirestore db;
 
     // States for tracking
     private boolean isPasswordVisible = false; // Toggle state for password
-    private final int MAX_CHAR_LIMIT = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +43,13 @@ public class MainActivity extends AppCompatActivity {
         // Find views
         signUpButton = findViewById(R.id.signup_btn);
         inputPassword = findViewById(R.id.password_input);
-        inputUsername = findViewById(R.id.username_input);
-        usernameLimit = findViewById(R.id.username_limit);
+        inputUsernameEmail = findViewById(R.id.username_email_input);
+        usernameEmailError = findViewById(R.id.username_email_error);
+        passwordError = findViewById(R.id.password_error);
+        loginButton = findViewById(R.id.login_btn);
 
-        // TextWatchers
-        setupCharacterCounter(inputUsername, usernameLimit, MAX_CHAR_LIMIT);
+        // Database
+        db = FirebaseFirestore.getInstance();
 
         // Toggle for Password
         togglePasswordVisibility(inputPassword);
@@ -53,24 +61,95 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-    }
-    // Method to set up character counter logic
-    private void setupCharacterCounter(EditText editText, TextView limitTextView, int maxLimit) {
-        editText.setFilters(new InputFilter[]{ new InputFilter.LengthFilter(maxLimit) });
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        // Listener
+        loginButton.setOnClickListener(v -> {
+            if (validateInputs()) {
+                String usernameEmail = inputUsernameEmail.getText().toString().trim();
+                String password = inputPassword.getText().toString().trim();
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int currentLength = s.length();
-                limitTextView.setText(currentLength + "/" + maxLimit);
+                loginUser(usernameEmail, password);
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
         });
+
     }
+
+    // Validation Method
+    private boolean validateInputs() {
+        boolean isValid = true;
+        String usernameEmail = inputUsernameEmail.getText().toString().trim();
+        String password = inputPassword.getText().toString().trim();
+
+        // Validate Username
+        if (usernameEmail.isEmpty()) {
+            usernameEmailError.setText("Enter your username or email");
+            usernameEmailError.setVisibility(View.VISIBLE);
+            isValid = false;
+        } else {
+            usernameEmailError.setVisibility(View.GONE);
+        }
+
+        // Validate password
+        if (password.isEmpty()) {
+            passwordError.setText("Enter your password");
+            passwordError.setVisibility(View.VISIBLE);
+            isValid = false;
+        } else {
+            passwordError.setVisibility(View.GONE);
+        }
+
+        return isValid;
+    }
+
+    private void loginUser(String usernameEmail, String password) {
+        db.collection("users")
+                .whereEqualTo("username", usernameEmail)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        // Match found in username
+                        validatePassword(task.getResult().getDocuments().get(0), password);
+                    } else {
+                        // No match in username, check email
+                        db.collection("users")
+                                .whereEqualTo("email", usernameEmail)
+                                .get()
+                                .addOnCompleteListener(emailTask -> {
+                                    if (emailTask.isSuccessful() && !emailTask.getResult().isEmpty()) {
+                                        // Match found in email
+                                        validatePassword(emailTask.getResult().getDocuments().get(0), password);
+                                    } else {
+                                        // No match found in either username or email
+                                        usernameEmailError.setText("Username or Email not found");
+                                        usernameEmailError.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                    }
+                });
+    }
+
+    private void validatePassword(DocumentSnapshot userDoc, String password) {
+        String storedPassword = userDoc.getString("password");
+
+        if (storedPassword != null && storedPassword.equals(password)) {
+            // Password matches, login successful
+            String fullName = userDoc.getString("fullName");
+            String userId = userDoc.getId();
+            Toast.makeText(this, "Welcome " + fullName, Toast.LENGTH_SHORT).show();
+
+            // Redirect to dashboard activity
+            Intent intent = new Intent(this, DashboardActivity.class);
+            // Pass user ID as intent
+            intent.putExtra("userId", userId);
+            startActivity(intent);
+            finish();
+        } else {
+            // Password mismatch
+            passwordError.setText("Incorrect password");
+            passwordError.setVisibility(View.VISIBLE);
+        }
+    }
+
+
     private void togglePasswordVisibility(EditText editText) {
         editText.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
